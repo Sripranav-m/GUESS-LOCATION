@@ -1,0 +1,24 @@
+{% extends "loggedin.html" %}
+{% block contents %}
+{% load static %}
+
+
+
+<form action="{% url 'post-pic' %}" method='POST' enctype="multipart/form-data" style="margin-top:50px;">
+{% csrf_token %}
+	<div class="form-group file-upload-wrapper">
+  		NAME-OF-THE-PLACE   :<input type="text" id="input-file-now" name="namegiven" >
+	</div>
+  	<div class="form-group file-upload-wrapper">
+  		UPLOAD-THE-PICTURE :<input type="file" id="input-file-now" name="fileuploaded" class="file-upload btn btn-outline-primary" >
+	</div>
+	<div class="form-group">
+		<input type="submit" value="UPLOAD" class="btn btn-outline-success" style="">
+	</div>
+</form>
+
+
+
+
+
+{% endblock %}

@@ -105,14 +105,17 @@ def guessed(request):
         po_obj=points.objects.filter(username=username)
         p=0
         i=1
+        up_str=""
         im_list=carousel_Image.objects.all()
         while i<=carousel_Image.objects.count():
             if request.POST.get(str(i)):
                 if im_list[i-1].name==request.POST.get(str(i)):
-                    if str(i) not in po_obj.q_ans.split(" "):
+                    print(po_obj[0].q_ans.split(" "))
+                    if str(i) not in po_obj[0].q_ans.split(" "):
                         p+=1
-                        po_obj.q_ans+=str(i)
-                        po_obj.q_ans+=" "
+                        up_str+=str(i)
+                        up_str+=" "
+                        points.objects.filter(username=username).update(q_ans=up_str)
             i+=1
     p=p+po_obj[0].point
     points.objects.filter(username=username).update(point=p)

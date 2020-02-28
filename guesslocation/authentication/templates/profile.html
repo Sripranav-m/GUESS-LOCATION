@@ -1,0 +1,24 @@
+{% extends "loggedin.html" %}
+{% block contents %}
+{% load static %}
+	<div>
+	NAME :
+		<span>{{username}}</span>
+	</div>
+	<div>
+	EMAIL :
+		<span>{{email}}</span>
+	</div>
+	{% for item in images %}
+	<div>
+	{{forloop.counter}}
+		<span>
+    		<img src="{{item.image.url}}" style="width:150px;height:160px;">
+		</span>
+	{% endfor %}
+	</div>
+
+
+
+
+{% endblock %}

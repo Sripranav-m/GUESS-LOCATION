@@ -16,9 +16,10 @@ class carousel_Image(models.Model):
     def __str__(self):
         return (self.username+"->"+self.name)
 
-class guess(models.Model):
+
+class points(models.Model):
     username=models.CharField(max_length=100,default="")
-    guess=models.CharField(max_length=100,default="")
-    num=models.IntegerField()
+    point=models.IntegerField(default=0)
+    q_ans=models.CharField(max_length=1000,default="")
     def __str__(self):
         return (self.username+"->")

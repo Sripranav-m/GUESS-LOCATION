@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 import hashlib
 
-from .models import userdata,carousel_Image,guess
+from .models import userdata,carousel_Image,points
 from .forms import LoginForm,SignupForm
 
 # A VIEW TO DISPLAY THE FORM REQUIRED TO LOGIN
@@ -79,6 +79,8 @@ def signup(request):
             return render(request,'signup.html',{'text':text})
         new_obj=userdata(email=email_f,username=username_f,password=password_f)
         new_obj.save()
+        point_obj=points(username=username_f,point=0,q_ans="")
+        point_obj.save()
         request.session['username'] = username_f
         return redirect(login)
     else:
@@ -100,12 +102,34 @@ def postpic(request):
 def guessed(request):
     username=request.session['username']
     if request.method=='POST':
+        po_obj=points.objects.filter(username=username)
+        p=0
         i=1
-        while i<carousel_Image.objects.count():
+        im_list=carousel_Image.objects.all()
+        while i<=carousel_Image.objects.count():
             if request.POST.get(str(i)):
-                obj=guess(username=username,guess=request.POST.get(str(i)),num=i)
-                obj.save()
+                if im_list[i-1].name==request.POST.get(str(i)):
+                    if str(i) not in po_obj.q_ans.split(" "):
+                        p+=1
+                        po_obj.q_ans+=str(i)
+                        po_obj.q_ans+=" "
             i+=1
+    p=p+po_obj[0].point
+    points.objects.filter(username=username).update(point=p)
+    print(p) 
+    print(p)        
     images=[]
     images=carousel_Image.objects.all()
     return render(request,'loggedin.html',{'username':username,'images':images})
+
+def profile(request):
+    username=request.session['username']
+    data=userdata.objects.get(username=username)
+    email=data.email
+    images=carousel_Image.objects.filter(username=username)
+    return render(request,'profile.html',{"username":username,"email":email,"images":images})
+
+def leaderboard(request):
+    username=request.session['username']
+    poi=points.objects.order_by("-point")
+    return render(request,'leaderboard.html',{"username":username,"poi":poi})

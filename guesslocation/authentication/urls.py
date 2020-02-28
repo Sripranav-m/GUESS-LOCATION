@@ -11,4 +11,6 @@ urlpatterns = [
     path('post/',views.post,name='post'),
     path('postpic/',views.postpic,name='post-pic'),
     path('guessed/',views.guessed,name='guessed'),
+    path('profile/',views.profile,name='profile'),
+    path('leaderboard/',views.leaderboard,name='leaderboard'),
 ]
